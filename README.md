@@ -2,7 +2,7 @@
 octopie
 =======
 
-Python API client for GitHub API
+Python API client for GitHub APIv3
 
 ## Installation
 
