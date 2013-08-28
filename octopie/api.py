@@ -4,6 +4,7 @@ import json
 
 _HTTP_GET = 0
 _HTTP_POST = 1
+SAFE_URL_CARS = ':+'
 
 class APIError(StandardError):
     """
@@ -36,14 +37,14 @@ def _encode_params(**kwargs):
     for k, v in kwargs.iteritems():
         if isinstance(v, basestring):
             qv = v.encode('utf-8') if isinstance(v, unicode) else v
-            args.append('%s=%s' % (k, urllib.quote(qv)))
+            args.append('%s=%s' % (k, urllib.quote(qv, SAFE_URL_CARS)))
         elif isinstance(v, collections.Iterable):
             for i in v:
                 qv = i.encode('utf-8') if isinstance(i, unicode) else str(i)
-                args.append('%s=%s' % (k, urllib.quote(qv)))
+                args.append('%s=%s' % (k, urllib.quote(qv, SAFE_URL_CARS)))
         else:
             qv = str(v)
-            args.append('%s=%s' % (k, urllib.quote(qv)))
+            args.append('%s=%s' % (k, urllib.quote(qv, SAFE_URL_CARS)))
     return '&'.join(args)
 
 def _encode_ids(*args):
