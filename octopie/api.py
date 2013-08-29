@@ -63,16 +63,22 @@ def _encode_ids(*args):
 
     return ';'.join(ids)
 
-def _http_call(url, method, *args, **kwargs):
+def _http_call(url, method, auth, *args, **kwargs):
     params = _encode_params(**kwargs)
     ids = ''
+    credentials = ''
     url_format_str = '%s%s?%s'
 
     if args:
         ids = _encode_ids(*args)
         url_format_str = '%s/%s?%s'
 
-    http_url = url_format_str % (url, ids, params) if method == _HTTP_GET else url
+    if auth:
+        credentials = _encode_params(**auth)
+        url_format_str += '&%s'
+
+    http_url = url_format_str % (url, ids, params, credentials) \
+               if method == _HTTP_GET else url
 
     try:
         result = requests.get(http_url,
@@ -94,7 +100,9 @@ def _http_call(url, method, *args, **kwargs):
 
 class GitHubAPI(object):
 
-    def __init__(self, domain='api.github.com'):
+    def __init__(self, client_id=None, client_secret=None, domain='api.github.com'):
+        self.client_id = str(client_id)
+        self.client_secret = str(client_secret)
         self.api_url = 'https://%s/' % domain
 
     def __getattr__(self, attr):
@@ -106,12 +114,14 @@ class _Executable(object):
 
     def __init__(self, client, method, path):
         self._client = client
+        self._auth = None if client.client_id is None or client.client_secret is None \
+                     else {'client_id': client.client_id, 'client_secret': client.client_secret}
         self._method = method
         self._path = path
 
     def __call__(self, *args, **kwargs):
         return _http_call('%s%s' % (self._client.api_url, self._path), \
-            self._method, *args, **kwargs)
+            self._method, self._auth, *args, **kwargs)
 
     def __repr__(self):
         return "%s(%r)" % (self.__class__, self.__dict__)
