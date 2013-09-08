@@ -7,7 +7,7 @@ Python API client for GitHub APIv3
 ## Installation
 
 ### To Run
-    pip install pystex
+    pip install octopie
 
 ### To Develop
     Nothing specific now
