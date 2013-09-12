@@ -1,8 +1,6 @@
 import os
 import sys
 
-import octopie
-
 try:
     from setuptools import setup
 except ImportError:
@@ -16,7 +14,7 @@ requires = ["requests == 1.2.3"]
 
 setup(
     name='octopie',
-    version=octopie.__version__,
+    version='0.0.5',
     description='Python GitHub API Client',
     author='Steven Cheng',
     author_email='stevenc81@gmail.com',
