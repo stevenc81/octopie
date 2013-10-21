@@ -95,6 +95,10 @@ def _http_call(url, method, auth, *args, **kwargs):
     if 'error_id' in result:
         raise APIError(result['error_id'], result['error_message'],
             result['error_name'], http_url)
+    if 'message' in result:
+        if 'rate limit exceeded' in result['message']:
+            raise APIError('Rate limit exceeded' , result['message'],
+                'Rate limit exceeded', http_url)
 
     return result
 
