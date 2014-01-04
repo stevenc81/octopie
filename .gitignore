@@ -4,3 +4,4 @@
 /lib/
 /octopie.egg-info/
 /dist/
+*.pyc
