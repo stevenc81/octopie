@@ -6,8 +6,6 @@ _HTTP_GET = 0
 _HTTP_POST = 1
 SAFE_URL_CARS = ':+'
 
-_header = None
-
 class APIError(StandardError):
     """
     APIError contains json message indicating failure
