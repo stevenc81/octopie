@@ -14,7 +14,7 @@ requires = ["requests == 1.2.3"]
 
 setup(
     name='octopie',
-    version='0.0.8',
+    version='0.0.9',
     description='Python GitHub API Client',
     author='Steven Cheng',
     author_email='stevenc81@gmail.com',

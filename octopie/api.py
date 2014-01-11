@@ -6,6 +6,8 @@ _HTTP_GET = 0
 _HTTP_POST = 1
 SAFE_URL_CARS = ':+'
 
+_header = None
+
 class APIError(StandardError):
     """
     APIError contains json message indicating failure
@@ -63,7 +65,7 @@ def _encode_ids(*args):
 
     return ';'.join(ids)
 
-def _http_call(url, method, auth, *args, **kwargs):
+def _http_call(url, method, auth, client, *args, **kwargs):
     params = _encode_params(**kwargs)
     ids = ''
     credentials = ''
@@ -87,10 +89,10 @@ def _http_call(url, method, auth, *args, **kwargs):
         raise APIError('ConnectionError', 'ConnectionError', 'ConnectionError',
                        http_url, e)
 
-    rv = {}
     try:
         rv = json.loads(result.text)
-        rv['headers'] = result.headers
+        client._headers = result.headers
+
     except ValueError as e:
         raise APIError('ValueError', result.text, 'ValueError', http_url, e)
 
@@ -110,6 +112,10 @@ class GitHubAPI(object):
         self.client_id = str(client_id)
         self.client_secret = str(client_secret)
         self.api_url = 'https://%s/' % domain
+        self._headers = None
+
+    def getHeaders(self):
+        return self._headers
 
     def __getattr__(self, attr):
         if '__' in attr:
@@ -127,7 +133,7 @@ class _Executable(object):
 
     def __call__(self, *args, **kwargs):
         return _http_call('%s%s' % (self._client.api_url, self._path), \
-            self._method, self._auth, *args, **kwargs)
+            self._method, self._auth, self._client, *args, **kwargs)
 
     def __repr__(self):
         return "%s(%r)" % (self.__class__, self.__dict__)
