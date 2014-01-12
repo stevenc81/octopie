@@ -86,6 +86,9 @@ def _http_call(url, method, auth, client, *args, **kwargs):
     except requests.exceptions.ConnectionError as e:
         raise APIError('ConnectionError', 'ConnectionError', 'ConnectionError',
                        http_url, e)
+    except requests.exceptions.RequestException as re:
+        raise APIError('RequestException', 'RequestException', 'RequestException', http_url, re)
+
 
     try:
         rv = json.loads(result.text)
