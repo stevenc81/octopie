@@ -31,3 +31,7 @@ The octopie for above example will be:
     owner = 'steven'
     repo = 'octopie'
     result = api_client.repos.__getattr__(owner).__getattr__(repo).collaborators.get()
+
+## Notes
+
+* Octpie is defaulted to 30 seconds connection timeout
