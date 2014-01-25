@@ -5,6 +5,7 @@ import json
 _HTTP_GET = 0
 _HTTP_POST = 1
 SAFE_URL_CARS = ':+'
+TIMEOUT_SEC = 30
 
 class APIError(StandardError):
     """
@@ -82,10 +83,12 @@ def _http_call(url, method, auth, client, *args, **kwargs):
 
     try:
         result = requests.get(http_url,
-                headers={'accept': 'application/vnd.github.preview'})
+                headers={'accept': 'application/vnd.github.preview'}, timeout=TIMEOUT_SEC)
     except requests.exceptions.ConnectionError as e:
         raise APIError('ConnectionError', 'ConnectionError', 'ConnectionError',
                        http_url, e)
+    except requests.exceptions.Timeout as te:
+        raise APIError('Timeout', 'Timeout', 'Timeout', http_url, te)
     except requests.exceptions.RequestException as re:
         raise APIError('RequestException', 'RequestException', 'RequestException', http_url, re)
 
