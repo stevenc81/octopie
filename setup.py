@@ -10,7 +10,7 @@ if sys.argv[-1] == 'publish':
     os.system('python setup.py sdist upload')
     sys.exit()
 
-requires = ["requests == 1.2.3"]
+requires = ["requests == 2.20.0"]
 
 setup(
     name='octopie',
