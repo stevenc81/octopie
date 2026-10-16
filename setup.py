@@ -17,7 +17,6 @@ setup(
     version='0.0.11',
     description='Python GitHub API Client',
     author='Steven Cheng',
-    author_email='stevenc81@gmail.com',
     url='https://github.com/stevenc81/octopie',
     packages=['octopie'],
     package_data={'': ['LICENSE']},
